@@ -1,6 +1,6 @@
 <div align="center">
 
-# 悠光 · YouGuang
+# 悠光 · YoGuang
 
 **给 Photoshop 单个图层加光，让调光留在创作里。**
 
