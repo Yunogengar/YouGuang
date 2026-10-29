@@ -1,12 +1,12 @@
 <div align="center">
 
-# 悠光 · YoGuang
+# 悠光 · yoglow
 
 **给 Photoshop 单个图层加光，让调光留在创作里。**
 
-Photoshop 光效插件 · 可展开 Lab 工作台 · 独立桌面版
+Photoshop 图层光效 · DF 整图光学柔光 · 可展开 Lab 工作台
 
-[下载 v1.0](https://github.com/Yunogengar/YouGuang/releases/latest) · [五张图快速上手](#五张图快速上手) · [反馈问题](https://github.com/Yunogengar/YouGuang/issues)
+[下载 v1.1](https://github.com/Yunogengar/YouGuang/releases/latest) · [五张图快速上手](#五张图快速上手) · [反馈问题](https://github.com/Yunogengar/YouGuang/issues)
 
 Windows x64 · Photoshop 2025 / 26.0 及以上 · 简体中文
 
@@ -16,15 +16,27 @@ Windows x64 · Photoshop 2025 / 26.0 及以上 · 简体中文
 
 悠光是一款面向修图、合成与视觉特效的图层光效工具。选中素材层，调整光晕范围、亮度与颜色，用蒙版控制发光位置；完成后保存效果并结束编辑，再处理下一个图层。
 
+## v1.1 更新
+
+- **DF 光学柔光**：整张可见画面的高光扩散与柔光叠加。主控底部「DF 光学柔光 ↗」，或 Lab 顶部「DF 柔光」进入。
+- **四种 DF 预设**：轻柔扩散、高光漫射、暖色柔光、横向镜头微光；可调浓度、扩散范围、衰减、高光选择、色彩与质量。
+- **独立滤镜层**：保存后停止实时刷新；选回 DF 层可继续编辑，也能叠加新 DF。底图改动后点击「刷新画面」。DF 当前支持不透明的整图画面，透明素材请使用单图层辉光。
+- **GPU 与交互优化**：修复零强度触发 GPU 回退；只改浓度、辉光和颜色复用扩散缓存，小型 DF 预览减少一次传输往返。
+- **更清楚的图层控制**：绑定检查、定位与修复，背景点选 / 框选取光、双光和色相 / 亮度 / 主体深度范围选择。
+
+完整按钮说明见 [DF 光学柔光指引](optical-diffusion.html)；下载离线指南后用浏览器打开其中的 `optical-diffusion.html`。
+
 ## 下载与安装
 
-前往 **[Releases 下载区](https://github.com/Yunogengar/YouGuang/releases/latest)**，下载 `YouGuang-v1.0-Setup.exe`。
+前往 **[Releases 下载区](https://github.com/Yunogengar/YouGuang/releases/latest)**，下载 `yoglow-v1.1-Setup.exe`。
 
 1. 保存 Photoshop 文档并退出 PS。
 2. 运行安装程序，选择 **Photoshop 插件**、**桌面版**，或同时安装。
 3. 重新打开 PS，从 **插件 → 悠光** 进入面板；桌面版从桌面快捷方式启动。
 
-使用 PS 面板即可独立调光。桌面版既可作为第二个调光窗口，也可单独处理图片。
+**只安装 PS 窗口版即可使用图层辉光与 DF，算法和整合包内的 PS 组件相同。** 轻量 ZIP 约 7.7 MB；桌面组件可选，本轮新增 DF 在 PS 面板内使用。
+
+也可下载 `yoglow-v1.1-PS.zip`，完整解压后运行 `install.ps1`；常规 Program Files 安装可自动查找 PS，非标准路径请使用整合安装器。
 
 ## 30 秒开始调光
 
@@ -61,13 +73,21 @@ Windows x64 · Photoshop 2025 / 26.0 及以上 · 简体中文
 
 - **粗糙面**：较宽、柔和的环境受光，适合哑光表面。
 - **镜面**：更集中、更锐利的高光响应。
-- **金属面**：分析图像已有高光，让高光区域随环境产生更明显的辉光。
+- **金属面**：轻量模式参考已有亮部；空间受光模式按指定光源与估算表面形成带色高光。
 
 环境受光由二维图像与参考背景估算。适合快速制作受光观感；效果受素材明暗、轮廓和参考背景影响。
 
+## 性能与适用范围
+
+RTX 5080、Photoshop 27.6、6000×4000 RGB 8 位自建测试图：DF 重建帧 623 ms，缓存调浓度 584 ms，连续拖动的 11 个中间帧中位数 282 ms（205–455 ms），松手最终帧 457 ms。最终代理为 1731×1154，拖动代理为 540×360。
+
+数值包含算法与 PS 写回；首次读取、界面绘制、设备、图片与系统负载会影响整体响应，不代表所有图片都达到相同速度。GPU 负责浮点模糊，DF 颜色差输出仍在 WebView CPU 完成。两轮原生 DF 流程各 12 项检查通过。
+
+环境受光为 2.5D 近似；单张图片无法恢复完整的三维材质或画外环境。可选深度模型需要另外安装，不包含在基础安装包中。
+
 ## 五张图快速上手
 
-按顺序看，图中标注了对应按钮的位置与用途。可在 [Releases](https://github.com/Yunogengar/YouGuang/releases/latest) 下载 PDF，方便手机阅读与教学分享。
+以下五张图为基础操作示意；v1.1 的 DF 新入口和最新参数请优先查看离线 HTML 指引。按顺序看，图中标注了对应按钮的位置与用途。可在 [Releases](https://github.com/Yunogengar/YouGuang/releases/latest) 下载 PDF，方便手机阅读与教学分享。
 
 ### 1. PS 起步与保存
 
@@ -141,4 +161,4 @@ GPU 优先表示计算偏好。模糊可使用 GPU，读取 PS 图层、部分�
 
 **悠月** · GitHub [@Yunogengar](https://github.com/Yunogengar) · QQ：**2838981655**
 
-悠光 v1.0 · 免费、非盈利分享。
+悠光 v1.1 · 免费、非盈利分享。
